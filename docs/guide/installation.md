@@ -193,7 +193,7 @@ When ENV values are set and not present in settings.json, they are automatically
 
 ```json
 {
-  "$schema": "https://hapi.run/schemas/settings.schema.json",
+  "$schema": "https://hapi.run/docs/schemas/settings.schema.json",
   "listenHost": "0.0.0.0",
   "listenPort": 3006,
   "publicUrl": "https://your-domain.com"
