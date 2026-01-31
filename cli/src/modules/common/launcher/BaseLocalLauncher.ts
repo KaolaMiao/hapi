@@ -122,7 +122,7 @@ export class BaseLocalLauncher {
                     logger.debug(`[${label}]: launch error`, error)
                     const message = error instanceof Error ? error.message : String(error)
                     const failureMessage = `${failureLabel}: ${message}`
-                    
+
                     // Only send failure message if we are NOT switching
                     if (this.exitReason !== 'switch') {
                         sendFailureMessage(failureMessage)
