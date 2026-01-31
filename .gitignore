@@ -56,3 +56,15 @@ test-tls.ps1
 # Temporary issue reports
 TOOL_DIALOG_BUG_REPORT.md
 MOBILE_TOOL_CARD_ISSUE.md
+
+# Local documentation files (keep project clean)
+BATCH_DELETE_FEATURE_REQUEST.md
+MOBILE_TOOL_CARD_ISSUE.md
+TOOL_DIALOG_BUG_REPORT.md
+QUICK_START.md
+workflow.md
+INSTALL.bat
+UPDATE.bat
+如何删除对话.md
+如何继续未激活对话.md
+.gitignore.local
