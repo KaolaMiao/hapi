@@ -40,3 +40,19 @@ execplan/
 
 # Generated npm bundle output (local)
 cli/npm/main/
+
+# Local development files
+settings.json
+nul
+
+# Local test scripts
+generate-qr.ps1
+monitor-tls.js
+setup-tailscale.ps1
+test-hub-access.ps1
+test-tls.js
+test-tls.ps1
+
+# Temporary issue reports
+TOOL_DIALOG_BUG_REPORT.md
+MOBILE_TOOL_CARD_ISSUE.md

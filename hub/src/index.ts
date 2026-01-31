@@ -248,44 +248,50 @@ async function main() {
 
     if (tunnelUrl && tunnelManager) {
         const manager = tunnelManager
-        const announceTunnelAccess = async () => {
-            const tlsReady = await waitForTunnelTlsReady(tunnelUrl, manager)
-            if (!tlsReady) {
-                console.log('[Tunnel] Tunnel stopped before TLS was ready.')
-                return
-            }
 
-            console.log('[Web] Public: ' + tunnelUrl)
+        // Display access information immediately (don't wait for TLS)
+        console.log('[Web] Public: ' + tunnelUrl)
 
-            // Generate direct access link with hub and token
-            const params = new URLSearchParams({
-                hub: tunnelUrl,
-                token: config.cliApiToken
+        // Generate direct access link with hub and token
+        const params = new URLSearchParams({
+            hub: tunnelUrl,
+            token: config.cliApiToken
+        })
+        const directAccessUrl = `${officialWebUrl}/?${params.toString()}`
+
+        console.log('')
+        console.log('Open in browser:')
+        console.log(`  ${directAccessUrl}`)
+        console.log('')
+        console.log('or scan the QR code to open:')
+
+        // Display QR code for easy mobile access
+        try {
+            const qrString = await QRCode.toString(directAccessUrl, {
+                type: 'terminal',
+                small: true,
+                margin: 1,
+                errorCorrectionLevel: 'L'
             })
-            const directAccessUrl = `${officialWebUrl}/?${params.toString()}`
-
             console.log('')
-            console.log('Open in browser:')
-            console.log(`  ${directAccessUrl}`)
-            console.log('')
-            console.log('or scan the QR code to open:')
-
-            // Display QR code for easy mobile access
-            try {
-                const qrString = await QRCode.toString(directAccessUrl, {
-                    type: 'terminal',
-                    small: true,
-                    margin: 1,
-                    errorCorrectionLevel: 'L'
-                })
-                console.log('')
-                console.log(qrString)
-            } catch {
-                // QR code generation failure should not affect main flow
-            }
+            console.log(qrString)
+        } catch {
+            // QR code generation failure should not affect main flow
         }
 
-        void announceTunnelAccess()
+        // Wait for TLS in background (non-blocking)
+        const waitForTls = async () => {
+            const tlsReady = await waitForTunnelTlsReady(tunnelUrl, manager)
+            if (tlsReady) {
+                console.log('')
+                console.log('[Tunnel] TLS certificate is now ready!')
+            } else {
+                console.log('')
+                console.log('[Tunnel] Note: TLS certificate verification pending.')
+                console.log('[Tunnel] The tunnel is functional, but browsers may show security warnings.')
+            }
+        }
+        void waitForTls()
     }
     console.log('')
     console.log('HAPI Hub is ready!')
