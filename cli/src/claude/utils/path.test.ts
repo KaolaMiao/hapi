@@ -92,4 +92,23 @@ describe('getProjectPath', () => {
             expect(result).toBe(join('/custom/claude/config/', 'projects', '-Users-steve-projects-my-app'));
         });
     });
+
+    // Windows-specific tests
+    if (process.platform === 'win32') {
+        describe('Windows compatibility', () => {
+            it('should remove drive letter from Windows absolute paths', () => {
+                const workingDir = 'D:\\MyTools\\hapi';
+                const result = getProjectPath(workingDir);
+                const projectId = result.split('\\').pop();
+                expect(projectId).toBe('-MyTools-hapi');
+            });
+
+            it('should handle Windows paths with drive letter correctly', () => {
+                const workingDir = 'C:\\Users\\steve\\projects\\my-app';
+                const result = getProjectPath(workingDir);
+                const projectId = result.split('\\').pop();
+                expect(projectId).toBe('-Users-steve-projects-my-app');
+            });
+        });
+    }
 });

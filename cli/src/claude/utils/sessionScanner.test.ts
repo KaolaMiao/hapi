@@ -15,11 +15,13 @@ describe('sessionScanner', () => {
   beforeEach(async () => {
     testDir = join(tmpdir(), `scanner-test-${Date.now()}`)
     await mkdir(testDir, { recursive: true })
-    
-    const projectName = testDir.replace(/\//g, '-')
+
+    // Replace path separators (/, \) and colons (:) with hyphens for cross-platform compatibility
+    // Colons need to be replaced to handle Windows drive letters (e.g., "C:")
+    const projectName = testDir.replace(/[\/\\:]/g, '-')
     projectDir = join(homedir(), '.claude', 'projects', projectName)
     await mkdir(projectDir, { recursive: true })
-    
+
     collectedMessages = []
   })
   
