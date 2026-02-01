@@ -36,8 +36,7 @@ function normalizeAssistantOutput(
     localId: string | null,
     createdAt: number,
     data: Record<string, unknown>,
-    meta?: unknown,
-    messageLevelUsage?: unknown
+    meta?: unknown
 ): NormalizedMessage | null {
     const uuid = asString(data.uuid) ?? messageId
     const parentUUID = asString(data.parentUuid) ?? null
@@ -71,11 +70,7 @@ function normalizeAssistantOutput(
         }
     }
 
-    // Prefer message-level usage if available, otherwise extract from message.usage
-    const usage = messageLevelUsage !== undefined
-        ? (isObject(messageLevelUsage) ? (messageLevelUsage as Record<string, unknown>) : null)
-        : (isObject(message.usage) ? (message.usage as Record<string, unknown>) : null)
-
+    const usage = isObject(message.usage) ? (message.usage as Record<string, unknown>) : null
     const inputTokens = usage ? asNumber(usage.input_tokens) : null
     const outputTokens = usage ? asNumber(usage.output_tokens) : null
 
@@ -192,8 +187,7 @@ export function normalizeAgentRecord(
     localId: string | null,
     createdAt: number,
     content: unknown,
-    meta?: unknown,
-    usage?: unknown
+    meta?: unknown
 ): NormalizedMessage | null {
     if (!isObject(content) || typeof content.type !== 'string') return null
 
@@ -206,7 +200,7 @@ export function normalizeAgentRecord(
         if (data.isCompactSummary) return null
 
         if (data.type === 'assistant') {
-            return normalizeAssistantOutput(messageId, localId, createdAt, data, meta, usage)
+            return normalizeAssistantOutput(messageId, localId, createdAt, data, meta)
         }
         if (data.type === 'user') {
             return normalizeUserOutput(messageId, localId, createdAt, data, meta)

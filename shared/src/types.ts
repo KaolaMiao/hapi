@@ -4,7 +4,6 @@ export type {
     AgentStateRequest,
     AttachmentMetadata,
     DecryptedMessage,
-    MessageUsage,
     Metadata,
     Session,
     SyncEvent,

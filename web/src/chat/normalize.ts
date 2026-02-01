@@ -16,15 +16,14 @@ export function normalizeDecryptedMessage(message: DecryptedMessage): Normalized
             isSidechain: false,
             content: [{ type: 'text', text: safeStringify(message.content), uuid: message.id, parentUUID: null }],
             status: message.status,
-            originalText: message.originalText,
-            usage: message.usage
+            originalText: message.originalText
         }
     }
 
     if (record.role === 'user') {
         const normalized = normalizeUserRecord(message.id, message.localId, message.createdAt, record.content, record.meta)
         return normalized
-            ? { ...normalized, status: message.status, originalText: message.originalText, usage: message.usage }
+            ? { ...normalized, status: message.status, originalText: message.originalText }
             : {
                 id: message.id,
                 localId: message.localId,
@@ -34,20 +33,19 @@ export function normalizeDecryptedMessage(message: DecryptedMessage): Normalized
                 content: { type: 'text', text: safeStringify(record.content) },
                 meta: record.meta,
                 status: message.status,
-                originalText: message.originalText,
-                usage: message.usage
+                originalText: message.originalText
             }
     }
     if (record.role === 'agent') {
         if (isSkippableAgentContent(record.content)) {
             return null
         }
-        const normalized = normalizeAgentRecord(message.id, message.localId, message.createdAt, record.content, record.meta, message.usage)
+        const normalized = normalizeAgentRecord(message.id, message.localId, message.createdAt, record.content, record.meta)
         if (!normalized && isCodexContent(record.content)) {
             return null
         }
         return normalized
-            ? { ...normalized, status: message.status, originalText: message.originalText, usage: message.usage ?? normalized.usage }
+            ? { ...normalized, status: message.status, originalText: message.originalText }
             : {
                 id: message.id,
                 localId: message.localId,
@@ -57,8 +55,7 @@ export function normalizeDecryptedMessage(message: DecryptedMessage): Normalized
                 content: [{ type: 'text', text: safeStringify(record.content), uuid: message.id, parentUUID: null }],
                 meta: record.meta,
                 status: message.status,
-                originalText: message.originalText,
-                usage: message.usage
+                originalText: message.originalText
             }
     }
 
@@ -71,7 +68,6 @@ export function normalizeDecryptedMessage(message: DecryptedMessage): Normalized
         content: [{ type: 'text', text: safeStringify(record.content), uuid: message.id, parentUUID: null }],
         meta: record.meta,
         status: message.status,
-        originalText: message.originalText,
-        usage: message.usage
+        originalText: message.originalText
     }
 }
