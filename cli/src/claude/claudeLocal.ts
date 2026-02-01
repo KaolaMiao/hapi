@@ -102,9 +102,7 @@ export async function claudeLocal(opts: {
         }
     }
 
-    console.log(`[HAPI SPAWN LOG]: Executing "${spawnCmd}" with args: ${JSON.stringify(spawnArgs)} (shell: ${useShell})`);
-
-    logger.debug(`[ClaudeLocal] Spawning claude with args: ${JSON.stringify(args)}`);
+    logger.debug(`[ClaudeLocal] Executing "${spawnCmd}" with args: ${JSON.stringify(spawnArgs)} (shell: ${useShell})`);
 
     // Spawn the process
     try {
